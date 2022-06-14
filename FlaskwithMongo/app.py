@@ -12,7 +12,12 @@ heading = "TODO Application with Flask, MongoDB, and Angular"
 #MongoDB Connection String
 client = MongoClient("") #host uri  
 db = client.mymongodb #Select the database  
-todos = db.todo #Select the collection name   
+todos = db.todo #Select the collection name  
+
+def redirect_url():     
+    url_for('index') 
+
+@app.route("/") #Application Route for Default Route
     
 if __name__ == "__main__":    
     app.run()   
