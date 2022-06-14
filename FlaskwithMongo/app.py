@@ -25,6 +25,13 @@ def tasks ():
     todos_l = todos.find({"done":"no"})    
     a2="active"    
     return render_template('index.html',a2=a2,todos=todos_l,t=title,h=heading)  
+
+#Display all the Tasks
+@app.route("/list") #Application Route for List of All Tasks
+def lists ():        
+    todos_l = todos.find()    
+    a1="active"    
+    return render_template('index.html',a1=a1,todos=todos_l,t=title,h=heading)
     
 if __name__ == "__main__":    
     app.run()   
