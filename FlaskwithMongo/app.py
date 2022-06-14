@@ -18,6 +18,13 @@ def redirect_url():
     url_for('index') 
 
 @app.route("/") #Application Route for Default Route
+
+#Display the Uncompleted Tasks
+@app.route("/uncompleted") #Application Route for Uncompleted Tasks  
+def tasks ():    
+    todos_l = todos.find({"done":"no"})    
+    a2="active"    
+    return render_template('index.html',a2=a2,todos=todos_l,t=title,h=heading)  
     
 if __name__ == "__main__":    
     app.run()   
