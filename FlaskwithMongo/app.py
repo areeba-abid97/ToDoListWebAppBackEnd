@@ -32,6 +32,13 @@ def lists ():
     todos_l = todos.find()    
     a1="active"    
     return render_template('index.html',a1=a1,todos=todos_l,t=title,h=heading)
+
+#Display the Completed Tasks
+@app.route("/completed") #Application Route for Completed Tasks  
+def completed ():        
+    todos_l = todos.find({"done":"yes"})    
+    a3="active"    
+    return render_template('index.html',a3=a3,todos=todos_l,t=title,h=heading)
     
 if __name__ == "__main__":    
     app.run()   
