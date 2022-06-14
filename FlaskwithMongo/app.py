@@ -39,6 +39,19 @@ def completed ():
     todos_l = todos.find({"done":"yes"})    
     a3="active"    
     return render_template('index.html',a3=a3,todos=todos_l,t=title,h=heading)
+
+#Check if the Tasks are done or not
+@app.route("/done") #Application Route for Updating Tasks  
+def done ():       
+    id=request.values.get("_id")    
+    task=todos.find({"_id":ObjectId(id)})    
+    if(task[0]["done"]=="yes"):    
+        todos.update({"_id":ObjectId(id)}, {"$set": {"done":"no"}})    
+    else:    
+        todos.update({"_id":ObjectId(id)}, {"$set": {"done":"yes"}})    
+    redir=redirect_url()        
+    
+    return redirect(redir)   
     
 if __name__ == "__main__":    
     app.run()   
