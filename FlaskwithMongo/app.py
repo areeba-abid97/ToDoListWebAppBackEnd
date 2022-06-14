@@ -68,7 +68,14 @@ def action ():
 def remove ():        
     key=request.values.get("_id")    
     todos.remove({"_id":ObjectId(key)})    
-    return redirect("/")   
+    return redirect("/")  
+
+#Updating a Task
+@app.route("/update") #Application Route for Updating Tasks   
+def update ():    
+    id=request.values.get("_id")    
+    task=todos.find({"_id":ObjectId(id)})    
+    return render_template('update.html',tasks=task,h=heading,t=title) 
     
 if __name__ == "__main__":    
     app.run()   
