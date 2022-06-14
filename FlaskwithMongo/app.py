@@ -88,7 +88,16 @@ def updateRef ():
     todos.update({"_id":ObjectId(id)}, {'$set':{ "name":name, "desc":desc, "date":date, "pr":pr }})    
     return redirect("/") 
 
-     
+#Searching a Task with various references
+@app.route("/search", methods=['GET']) #Application Route for Searching Tasks with Various References   
+def search():    
+    key=request.values.get("key")    
+    refer=request.values.get("refer")    
+    if(key=="_id"):    
+        todos_l = todos.find({refer:ObjectId(key)})    
+    else:    
+        todos_l = todos.find({refer:key})    
+    return render_template('searchlist.html',todos=todos_l,t=title,h=heading)     
     
 if __name__ == "__main__":    
     app.run()   
