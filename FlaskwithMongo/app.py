@@ -75,7 +75,20 @@ def remove ():
 def update ():    
     id=request.values.get("_id")    
     task=todos.find({"_id":ObjectId(id)})    
-    return render_template('update.html',tasks=task,h=heading,t=title) 
+    return render_template('update.html',tasks=task,h=heading,t=title)
+
+#Updating a Task with various references
+@app.route("/updateRef", methods=['POST']) #Application Route for Updating Tasks with Various References  
+def updateRef ():    
+    name=request.values.get("name")    
+    desc=request.values.get("desc")    
+    date=request.values.get("date")    
+    pr=request.values.get("pr")    
+    id=request.values.get("_id")    
+    todos.update({"_id":ObjectId(id)}, {'$set':{ "name":name, "desc":desc, "date":date, "pr":pr }})    
+    return redirect("/") 
+
+     
     
 if __name__ == "__main__":    
     app.run()   
