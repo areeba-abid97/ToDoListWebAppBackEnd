@@ -61,7 +61,14 @@ def action ():
     date=request.values.get("date")    
     pr=request.values.get("pr")    
     todos.insert({ "name":name, "desc":desc, "date":date, "pr":pr, "done":"no"})    
-    return redirect("/list")  
+    return redirect("/list") 
+
+#Deleting a Task with various references
+@app.route("/remove") #Application Route for Removing Tasks 
+def remove ():        
+    key=request.values.get("_id")    
+    todos.remove({"_id":ObjectId(key)})    
+    return redirect("/")   
     
 if __name__ == "__main__":    
     app.run()   
