@@ -161,3 +161,23 @@ app.put('/todo/:userId/:todoId', (req, res) => {
         })
     });
 });
+
+
+// delete single todo
+app.delete('/todo/:userId/:todoId', (req, res) => {
+    const { userId, todoId } = req.params;
+    const { content, isDone } = req.body;
+    User.findOne({ 
+        "_id": userId 
+    }).then(async (user) => {
+        user.todos = user.todos.filter((todo) => ( todo._id !== todoId));
+        await user.save();
+        return res.status(200).json({
+            "todos": user.todos
+        })
+    }).catch((error) => {
+        return res.status(500).json({
+            error
+        })
+    });
+});
