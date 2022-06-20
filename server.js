@@ -16,8 +16,8 @@ app.use(express.json())
 app.use(cors())
 
 mongoose.connect(
-    process.env.DB_CONNECT, 
-    { useNewUrlParser: true, useUnifiedTopology: true }, 
+    process.env.DB_CONNECT,
+    { useNewUrlParser: true, useUnifiedTopology: true },
     () => {
         console.log("Connected to db!");
         app.listen(process.env.PORT, () => console.log(`Server Up and running on port ${process.env.PORT}`));
@@ -32,9 +32,8 @@ app.get('/', (req, res) => {
 
 // login on platform
 app.post('/login', (req, res) => {
-    const {username, password} = req.body;
+    const { username, password } = req.body;
     console.log(username, password);
-
     User.findOne({
         username,
         password
@@ -53,15 +52,15 @@ app.post('/login', (req, res) => {
 
 // signup on platform
 app.post('/signup', async (req, res) => {
-    const {username, password} = req.body;
+    const { username, password } = req.body;
     console.log(username, password);
     const user = new User({
         username,
         password
     })
-    try{
+    try {
         await user.save()
-    }catch(error){
+    } catch (error) {
         return res.status(500).json({
             error
         })
@@ -71,11 +70,20 @@ app.post('/signup', async (req, res) => {
     })
 });
 
+//logout on platform
+router.get('/logout', function (req, res) {
+    console.log('User Id', req.user._id);
+    User.findByIdAndRemove(req.user._id, function (err) {
+      if (err) res.send(err);
+      res.json({ message: 'User Deleted!' });
+    })
+});
+
 // get todos by user id
 app.get('/todos/:id', async (req, res) => {
     const id = req.params.id;
     User.findById({
-        "_id": id 
+        "_id": id
     }).then((user) => {
         return res.status(200).json({
             "todos": user.todos
@@ -91,9 +99,9 @@ app.get('/todos/:id', async (req, res) => {
 app.post('/todo', async (req, res) => {
     const { id, content, isDone } = req.body;
     User.findById({
-        "_id": id 
+        "_id": id
     }).then(async (user) => {
-        try{
+        try {
             user.todos.push({
                 content,
                 isDone
@@ -102,7 +110,7 @@ app.post('/todo', async (req, res) => {
             return res.status(200).json({
                 "todos": user.todos
             })
-        }catch(error){
+        } catch (error) {
             console.log('adsasdasds2')
             return res.status(500).json({
                 error
@@ -119,8 +127,8 @@ app.post('/todo', async (req, res) => {
 // get single todo
 app.get('/todo/:userId/:todoId', (req, res) => {
     const { userId, todoId } = req.params;
-    User.findOne({ 
-        "_id": userId 
+    User.findOne({
+        "_id": userId
     }).then((user) => {
         user.todos.map((todo) => {
             console.log(todo._id)
@@ -142,8 +150,8 @@ app.get('/todo/:userId/:todoId', (req, res) => {
 app.put('/todo/:userId/:todoId', (req, res) => {
     const { userId, todoId } = req.params;
     const { content, isDone } = req.body;
-    User.findOne({ 
-        "_id": userId 
+    User.findOne({
+        "_id": userId
     }).then(async (user) => {
         user.todos.map((todo) => {
             if (todo._id.toString() === todoId) {
@@ -167,10 +175,10 @@ app.put('/todo/:userId/:todoId', (req, res) => {
 app.delete('/todo/:userId/:todoId', (req, res) => {
     const { userId, todoId } = req.params;
     const { content, isDone } = req.body;
-    User.findOne({ 
-        "_id": userId 
+    User.findOne({
+        "_id": userId
     }).then(async (user) => {
-        user.todos = user.todos.filter((todo) => ( todo._id !== todoId));
+        user.todos = user.todos.filter((todo) => (todo._id !== todoId));
         await user.save();
         return res.status(200).json({
             "todos": user.todos
