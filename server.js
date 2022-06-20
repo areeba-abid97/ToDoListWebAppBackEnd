@@ -71,12 +71,9 @@ app.post('/signup', async (req, res) => {
 });
 
 //logout on platform
-router.get('/logout', function (req, res) {
-    console.log('User Id', req.user._id);
-    User.findByIdAndRemove(req.user._id, function (err) {
-      if (err) res.send(err);
-      res.json({ message: 'User Deleted!' });
-    })
+app.get("/logout",(req,res)=>{
+    req.logout();
+    res.redirect("/");
 });
 
 // get todos by user id
