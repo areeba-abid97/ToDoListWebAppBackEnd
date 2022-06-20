@@ -70,12 +70,6 @@ app.post('/signup', async (req, res) => {
     })
 });
 
-//logout on platform
-app.get("/logout",(req,res)=>{
-    req.logout();
-    res.redirect("/");
-});
-
 // get todos by user id
 app.get('/todos/:id', async (req, res) => {
     const id = req.params.id;
